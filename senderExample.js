@@ -3,7 +3,7 @@ var events = require("./src/events")();
 var crypto = require('crypto');
 
 var task = {
-	something: "something",
+	task: {},
 	time: Math.floor(new Date().getTime()/1000),
 	persistant: true,
 	ttl: 5

@@ -7,10 +7,13 @@ var config = {
 	workerName: "tasks",
 	workerCount: 10,
 	worker: "./workerExample",
-	tasksLimit: -1 // -1 for unlimited, 0 for one per worker and >0 for exact number
+	tasksLimit: -1, // -1 for unlimited, 0 for one per worker and >0 for exact number
+	restartLimit: 10
 }
 
 var w = {
+	_restartCount: 0,
+	_limitReached: false,
 	_workers: [],
 	_readyWorkers: [],
 	_config: undefined,
@@ -52,6 +55,7 @@ var w = {
 		}
 
 		worker.name = "Worker " + number;
+		worker.number = number;
 
 		w._workers.push(worker);
 
@@ -71,11 +75,15 @@ var w = {
 	},
 
 	exited: function(worker){
+		w._restartCount++;
+
+		var name = "";
 		var number = 0;
 
 		w._workers = w._workers.filter(function(currentWorker, key){
 			if(currentWorker == worker){
-				number = key + 1;
+				name = worker.name;
+				number = worker.number;
 			}
 
 			return currentWorker != worker;
@@ -85,7 +93,23 @@ var w = {
 			return currentWorker != worker;
 		});
 
-		console.log("Worker " + number + " exited... ");
+		console.log(name + " exited... ");
+
+		if(w._config.restartLimit != -1 && w._config.restartLimit <= w._restartCount){
+			// TODO: Notify user
+
+			if(!w._limitReached){
+				console.log("Restart limit reached... ");
+			}
+
+			w._limitReached = true;
+
+			if(w._workers.length == 0){
+				process.exit(1);
+			}
+
+			return;
+		}
 
 		w.fork(number);
 	}

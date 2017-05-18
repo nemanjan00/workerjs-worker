@@ -5,6 +5,7 @@ var EventEmitter = require('events');
 
 module.exports = function(){
 	var queue = {
+		_listening: {},
 		_client: undefined,
 
 		_handler: function(channel){
@@ -17,7 +18,11 @@ module.exports = function(){
 			});
 		},
 		on: function(eventName, listener){
-			queue._handler(eventName);
+			if(queue._listening[eventName] == undefined){
+				queue._handler(eventName);
+				queue._listening[eventName] = true;
+			}
+
 			return queue.prototype.on(eventName, listener);
 		},
 		emit: function(eventName, data){
