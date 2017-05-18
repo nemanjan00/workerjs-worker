@@ -54,6 +54,7 @@ var w = {
 			number = w._workers.length + 1;
 		}
 
+		worker.tasks = [];
 		worker.name = "Worker " + number;
 		worker.number = number;
 

@@ -12,11 +12,19 @@ module.exports = function(task, name){
 			t._worker = worker;
 			t._worker.send({type: "task", task: t._task});
 
+			t._worker.tasks.push(t);
+
 			console.log(t._worker.name+" was assigned task "+t._task.uid+"... ");
 
 			t._worker.on("message", function(message){
 				if(message.type = "finished" && message.uid == t._task.uid){
 					console.log(t._worker.name+" finished task "+t._task.uid+"... ");
+
+					t.emit("finished");
+
+					t._worker.tasks = t._worker.tasks.filter(function(task){
+						return task != t;
+					});
 				}
 			});
 		},
