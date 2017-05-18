@@ -1,5 +1,5 @@
 var events = require("../events")();
-var nodeEvents = require('events');
+var EventEmitter = require('events').EventEmitter;
 
 module.exports = function(task, name){
 	var t = {
@@ -7,7 +7,7 @@ module.exports = function(task, name){
 		_worker: undefined,
 		_name: undefined,
 		_events: events,
-		_eventEmitter: new nodeEvents.EventEmitter(),
+		_eventEmitter: new EventEmitter(),
 	
 		send: function(worker){
 			t._worker = worker;
@@ -40,13 +40,16 @@ module.exports = function(task, name){
 		}
 	}
 
-	t = new t;
+	t.on = function(name, callback){
+		t._eventEmitter.on(name, callback);
+	};
 
-	t.on = t._eventEmitter.on;
-	t.emit = t._eventEmitter.emit;
+	t.emit = function(name, data){
+		t._eventEmitter.emit(name, data);
+	}
 
 	t._task = task;
 	t._name = name;
 
-	return Object.create(t);
+	return t;
 }

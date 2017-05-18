@@ -1,12 +1,12 @@
 var redis = require("redis");
 
-var nodeEvents = require('events');
+var EventEmitter = require('events');
 
 var queue = {
 	_listening: {},
 	_client: undefined,
 	_disabled: false,
-	_eventEmitter: new nodeEvents.EventEmitter(),
+	_eventEmitter: new EventEmitter(),
 
 	_handler: function(channel){
 		setTimeout(function(){

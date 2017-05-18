@@ -20,7 +20,6 @@ var w = {
 	_readyWorkers: [],
 	_taskCount: 0,
 	_config: undefined,
-	_i: 0,
 
 	start: function(config){
 		w._config = config;
@@ -45,15 +44,12 @@ var w = {
 					events.stop();
 				}
 				
-				console.log(w._i++);
 				task.on("finished", function(data){
-					//console.log("aaa", w._taskCount);
 					w._taskCount--;
 					events.start();
-					//delete task;
+					delete task;
 				});
 			} else {
-				console.log(w._taskCount);
 				console.error("All workers busy... ");
 				task.failed();
 			}
