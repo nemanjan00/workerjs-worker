@@ -1,3 +1,3 @@
 # workerjs-worker
 
-CLI Interface for starting worker and forwarding commands.
+CLI Interface and library for starting and managing workers and forwarding commands and results.
