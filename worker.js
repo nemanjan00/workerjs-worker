@@ -8,8 +8,8 @@ var config = {
 	workerName: "tasks",
 	workerCount: 10,
 	worker: "./workerExample",
-	tasksLimit: -1, // -1 for unlimited, 0 for one per worker and >0 for exact number
-	restartLimit: 10
+	tasksLimit: 0, // -1 for unlimited, 0 for one per worker and >0 for exact number
+	restartLimit: 100
 }
 
 var w = {
@@ -38,13 +38,38 @@ var w = {
 			if(worker = w.getNextWorker()){
 				task.send(worker);
 			} else {
+				console.error("All workers busy... ");
 				task.failed();
 			}
 		});
 	},
 
 	getNextWorker: function(){
-		return w._readyWorkers[0];
+		var worker = false;
+
+		if(w._config.tasksLimit == -1){
+			worker = w.findWorker();
+		} else {
+			var tempWorker = w.findWorker();
+		
+			if(tempWorker.tasks.length <= w._config.tasksLimit){
+				worker = tempWorker;
+			}
+		}
+
+		return worker;
+	},
+
+	findWorker: function(){
+		var worker = w._workers[0];
+
+		w._workers.forEach(function(currentWorker){
+			if(currentWorker.tasks.length < worker.tasks.length){
+				worker = currentWorker;
+			}
+		});
+
+		return worker;
 	},
 
 	fork: function(number){

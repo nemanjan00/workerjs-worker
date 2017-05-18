@@ -1,4 +1,4 @@
-var events = require("../events");
+var events = require("../events")();
 var EventEmitter = require('events');
 var util = require("util");
 
@@ -7,6 +7,7 @@ module.exports = function(task, name){
 		_task: undefined,
 		_worker: undefined,
 		_name: undefined,
+		_events: events,
 	
 		send: function(worker){
 			t._worker = worker;
@@ -34,7 +35,7 @@ module.exports = function(task, name){
 			}
 
 			if(t._task.ttl > 0){
-				events.emit(t._name, JSON.stringify(task));
+				t._events.emit(t._name, JSON.stringify(task));
 			}
 		}
 	}
