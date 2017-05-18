@@ -6,12 +6,13 @@ var events = require("./src/events")();
 var config = {
 	workerName: "tasks",
 	workerCount: 10,
-	worker: "./worker",
+	worker: "./workerExample",
 	tasksLimit: -1 // -1 for unlimited, 0 for one per worker and >0 for exact number
 }
 
 var w = {
 	_workers: [],
+	_readyWorkers: [],
 	_config: undefined,
 
 	start: function(config){
@@ -26,7 +27,11 @@ var w = {
 		var worker = child_process.fork(path.join(process.cwd(), w._config.worker));
 		w._workers.push(worker);
 
-		worker.send("123");
+		worker.on("message", function(message){
+			if(message.type == "ready"){
+				w._readyWorkers.push(worker);
+			}
+		});
 
 		worker.on('exit', (code, signal) => {
 			w.exited(worker);
@@ -37,6 +42,10 @@ var w = {
 
 	exited: function(worker){
 		w._workers = w._workers.filter(function(currentWorker){
+			return currentWorker != worker;
+		});
+
+		w._readyWorker = w._readyWorkers.filter(function(currentWorker){
 			return currentWorker != worker;
 		});
 
