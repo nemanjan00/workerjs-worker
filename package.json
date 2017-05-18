@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "workerjs-worker": "worker.js"
+  },
   "author": "nemanjan00",
   "license": "ISC",
   "dependencies": {
