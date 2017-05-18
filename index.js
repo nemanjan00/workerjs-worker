@@ -26,7 +26,6 @@ var worker = {
 
 		process.on("message", function(message){
 			if(message.type == "task"){
-				console.log(message.task);
 				worker.emit("task", task(message.task));
 			}
 		});

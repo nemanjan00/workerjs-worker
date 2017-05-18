@@ -21,6 +21,14 @@ var w = {
 		for(i = 0; i < config.workerCount; i++){
 			w.fork();
 		}
+
+		w.listen();
+	},
+
+	listen: function(){
+		events.on(w._config.workerName, function(data){
+			console.log(JSON.parse(data));
+		});
 	},
 
 	fork: function(){
@@ -30,6 +38,8 @@ var w = {
 		worker.on("message", function(message){
 			if(message.type == "ready"){
 				w._readyWorkers.push(worker);
+
+				worker.send({type: "task"});
 			}
 		});
 
@@ -54,8 +64,4 @@ var w = {
 }
 
 w.start(config);
-
-events.on(config.workerName, function(data){
-	console.log(data);
-});
 
