@@ -1,6 +1,7 @@
 var child_process = require('child_process');
 var path = require("path");
 
+var task = require("./src/taskServer");
 var events = require("./src/events")();
 
 var config = {
@@ -12,6 +13,7 @@ var config = {
 }
 
 var w = {
+	_task: task,
 	_restartCount: 0,
 	_limitReached: false,
 	_workers: [],
@@ -30,15 +32,13 @@ var w = {
 
 	listen: function(){
 		events.on(w._config.workerName, function(data){
-			var task = JSON.parse(data);
-			if(worker = w.getNextWorker()){
-				worker.send({type: "task", task: data});
-			} else {
-				if(!task.persistant){
-					task.ttl--;
-				}
+			var data = JSON.parse(data);
+			var task = w._task(data, w._config.workerName);
 
-				events.emit(w._config.workerName, JSON.stringify(task));
+			if(worker = w.getNextWorker()){
+				task.send(worker);
+			} else {
+				task.failed();
 			}
 		});
 	},
