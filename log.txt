@@ -1,0 +1,383 @@
+Worker 1 started... 
+Worker 2 started... 
+Worker 3 started... 
+Worker 4 started... 
+Worker 5 started... 
+Worker 6 started... 
+Worker 7 started... 
+Worker 8 started... 
+Worker 9 started... 
+Worker 10 started... 
+Worker 1 was assigned task fdb7a5e3142f5f424f1f3c1bca9269a8... 
+Worker 2 was assigned task cbcce7460143c3beb8d6b4ffc66613a0... 
+Worker 3 was assigned task 416558532e9bd774ccd0bf03f18708a7... 
+Worker 4 was assigned task f711eb42620295431ffd268cc8adcdd8... 
+Worker 5 was assigned task 4fd6b499452780da19f162ccd53c9da5... 
+Worker 6 was assigned task 86a7cf0e18ca13da6ce5c4b5c63fa68c... 
+Worker 7 was assigned task a831fbb382c22d1e9c3d3c5ccdbd2d10... 
+Worker 8 was assigned task 59b3800f451d9d2b25c82fb7238c4db6... 
+Worker 9 was assigned task b1c5d1c4aabc6db54f621ff5fed8d5b3... 
+Worker 10 was assigned task 23e61c07f6969515a780e006cb56be28... 
+Worker 4 finished task f711eb42620295431ffd268cc8adcdd8... 
+12843
+0
+12843
+1
+12843
+2
+12843
+3
+12843
+4
+12843
+5
+12843
+6
+12843
+7
+12843
+8
+12843
+9
+Worker 4 was assigned task a7919389a7ded8018f9bed06e567f18e... 
+Worker 1 was assigned task 8a010a301e18961cb41b5ae50c1e6edb... 
+Worker 2 was assigned task 53f086573ee6aba4cef2ea7296c71334... 
+Worker 3 was assigned task 39ce9b0ba53c1ca1ca83c272e8dfd7fe... 
+Worker 4 was assigned task bd6e190cdc87cd9a26c8515da879770c... 
+Worker 5 was assigned task 70737bde4d64dc99da67781f4bb936ed... 
+Worker 6 was assigned task 2da210347dd35871630570e141eaac21... 
+Worker 7 was assigned task be91aa2af163d7091051e50397e757ad... 
+Worker 8 was assigned task 90d5c708d130f416693371049e82fb89... 
+Worker 9 was assigned task 9a683ee19ec47fdeed9319509c49af3f... 
+Worker 7 finished task a831fbb382c22d1e9c3d3c5ccdbd2d10... 
+12846
+10
+12846
+11
+12846
+12
+12846
+13
+12846
+14
+12846
+15
+12846
+16
+12846
+17
+12846
+18
+12846
+19
+12846
+20
+12846
+21
+12846
+22
+12846
+23
+12846
+24
+12846
+25
+12846
+26
+12846
+27
+12846
+28
+12846
+29
+Worker 7 was assigned task 5c19367f14301afc05c9ff132266703b... 
+Worker 10 was assigned task 0ba68bbf0c696cc636e94ff28753e3ff... 
+Worker 10 finished task 23e61c07f6969515a780e006cb56be28... 
+12849
+30
+12849
+31
+12849
+32
+12849
+33
+12849
+34
+12849
+35
+12849
+36
+12849
+37
+12849
+38
+12849
+39
+12849
+40
+12849
+41
+12849
+42
+12849
+43
+12849
+44
+12849
+45
+12849
+46
+12849
+47
+12849
+48
+12849
+49
+12849
+50
+12849
+51
+Worker 10 was assigned task 107c04be089fcf8437606f7655c54bf3... 
+Worker 5 finished task 4fd6b499452780da19f162ccd53c9da5... 
+12844
+52
+12844
+53
+12844
+54
+12844
+55
+12844
+56
+12844
+57
+12844
+58
+12844
+59
+12844
+60
+12844
+61
+12844
+62
+12844
+63
+12844
+64
+12844
+65
+12844
+66
+12844
+67
+12844
+68
+12844
+69
+12844
+70
+12844
+71
+12844
+72
+12844
+73
+12844
+74
+Worker 5 was assigned task aa21b2b8a9056a1ee04d282840758ae5... 
+Worker 9 finished task b1c5d1c4aabc6db54f621ff5fed8d5b3... 
+12848
+75
+12848
+76
+12848
+77
+12848
+78
+12848
+79
+12848
+80
+12848
+81
+12848
+82
+12848
+83
+12848
+84
+12848
+85
+12848
+86
+12848
+87
+12848
+88
+12848
+89
+12848
+90
+12848
+91
+12848
+92
+12848
+93
+12848
+94
+12848
+95
+12848
+96
+12848
+97
+12848
+98
+Worker 9 was assigned task 5003e92374b694a3cf6ab0f1f575f91d... 
+Worker 3 finished task 416558532e9bd774ccd0bf03f18708a7... 
+12842
+99
+12842
+100
+12842
+101
+12842
+102
+12842
+103
+12842
+104
+12842
+105
+12842
+106
+12842
+107
+12842
+108
+12842
+109
+12842
+110
+12842
+111
+12842
+112
+12842
+113
+12842
+114
+12842
+115
+12842
+116
+12842
+117
+12842
+118
+12842
+119
+12842
+120
+12842
+121
+12842
+122
+12842
+123
+Worker 3 was assigned task 787a4b870f6acd5535bce2cb6cbb0d6c... 
+Worker 10 finished task 107c04be089fcf8437606f7655c54bf3... 
+12870
+124
+12870
+125
+12870
+126
+12870
+127
+12870
+128
+12870
+129
+12870
+130
+12870
+131
+12870
+132
+12870
+133
+12870
+134
+12870
+135
+12870
+136
+12870
+137
+12870
+138
+12870
+139
+12870
+140
+12870
+141
+12870
+142
+12870
+143
+12870
+144
+12870
+145
+12870
+146
+12870
+147
+12870
+148
+12870
+149
+Worker 10 was assigned task 39f1527a074a1a2b91f80efb4111f3c0... 
+Worker 3 finished task 39ce9b0ba53c1ca1ca83c272e8dfd7fe... 
+12853
+150
+12853
+151
+12853
+152
+12853
+153
+12853
+154
+12853
+155
+12853
+156
+12853
+157
+12853
+158
+12853
+159
+12853
+160
+12853
+161
+12853
+162
+12853
+163
+12853
+164
+12853
+165
+12853
+166
+12853
+167
+12853
+168

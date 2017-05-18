@@ -1,17 +1,14 @@
 var util = require('util');
-var EventEmitter = require('events');
+var nodeEvents = require('events');
 
 var task = require("./src/taskClient");
 
 var worker = {
+	_eventEmitter: new nodeEvents.EventEmitter(),
+
 	init: function(){
-		EventEmitter.call(worker);
-
-		worker.prototype = {};
-		util.inherits(worker, EventEmitter);
-
-		worker.on = worker.prototype.on;
-		worker.emit = worker.prototype.emit;
+		worker.on = worker._eventEmitter.on;
+		worker.emit = worker._eventEmitter.emit;
 
 		// Make sure process stays alive
 

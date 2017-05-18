@@ -8,7 +8,7 @@ var config = {
 	workerName: "tasks",
 	workerCount: 10,
 	worker: "./workerExample",
-	tasksLimit: 0, // -1 for unlimited, 0 for one per worker and >0 for exact number
+	tasksLimit: 1, // -1 for unlimited
 	restartLimit: 100
 }
 
@@ -18,7 +18,9 @@ var w = {
 	_limitReached: false,
 	_workers: [],
 	_readyWorkers: [],
+	_taskCount: 0,
 	_config: undefined,
+	_i: 0,
 
 	start: function(config){
 		w._config = config;
@@ -37,7 +39,21 @@ var w = {
 
 			if(worker = w.getNextWorker()){
 				task.send(worker);
+				w._taskCount++;
+				
+				if(w._taskCount >= w._config.workerCount * w._config.tasksLimit && w._config.tasksLimit > -1){
+					events.stop();
+				}
+				
+				console.log(w._i++);
+				task.on("finished", function(data){
+					//console.log("aaa", w._taskCount);
+					w._taskCount--;
+					events.start();
+					//delete task;
+				});
 			} else {
+				console.log(w._taskCount);
 				console.error("All workers busy... ");
 				task.failed();
 			}

@@ -1,20 +1,27 @@
 var redis = require("redis");
 
-var util = require('util');
-var EventEmitter = require('events');
+var nodeEvents = require('events');
 
 var queue = {
 	_listening: {},
 	_client: undefined,
+	_disabled: false,
+	_eventEmitter: new nodeEvents.EventEmitter(),
 
 	_handler: function(channel){
-		queue._client.blpop("tasks", 5, function(err, data){
-			if(data != null){
-				queue.prototype.emit(channel, data[1]);
-			}
+		setTimeout(function(){
+			if(!queue._disabled){
+				queue._client.blpop("tasks", 5, function(err, data){
+					if(data != null){
+						queue._eventEmitter.emit(channel, data[1]);
+					}
 
-			queue._handler(channel);
-		});
+					queue._handler(channel);
+				});
+			} else {
+				queue._handler(channel);
+			}
+		}, 0);
 	},
 	on: function(eventName, listener){
 		if(queue._listening[eventName] == undefined){
@@ -22,7 +29,7 @@ var queue = {
 			queue._listening[eventName] = true;
 		}
 
-		return queue.prototype.on(eventName, listener);
+		return queue._eventEmitter.on(eventName, listener);
 	},
 	emit: function(eventName, data){
 		return new Promise(function(resolve, reject){
@@ -34,13 +41,15 @@ var queue = {
 				}
 			});
 		});
+	},
+
+	stop: function(){
+		queue._disabled = true;
+	},
+	start: function(){
+		queue._disabled = false;
 	}
 }
-
-EventEmitter.call(queue);
-
-queue.prototype = {};
-util.inherits(queue, EventEmitter);
 
 module.exports = function(){
 	if(queue._client == undefined){

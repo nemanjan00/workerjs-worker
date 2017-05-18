@@ -1,6 +1,5 @@
 var events = require("../events")();
-var EventEmitter = require('events');
-var util = require("util");
+var nodeEvents = require('events');
 
 module.exports = function(task, name){
 	var t = {
@@ -8,6 +7,7 @@ module.exports = function(task, name){
 		_worker: undefined,
 		_name: undefined,
 		_events: events,
+		_eventEmitter: new nodeEvents.EventEmitter(),
 	
 		send: function(worker){
 			t._worker = worker;
@@ -21,7 +21,7 @@ module.exports = function(task, name){
 				if(message.type = "finished" && message.uid == t._task.uid){
 					console.log(t._worker.name+" finished task "+t._task.uid+"... ");
 
-					t.emit("finished");
+					t.emit("finished", t._task.i);
 
 					t._worker.tasks = t._worker.tasks.filter(function(task){
 						return task != t;
@@ -40,16 +40,13 @@ module.exports = function(task, name){
 		}
 	}
 
-	EventEmitter.call(t);
+	t = new t;
 
-	t.prototype = {};
-	util.inherits(t, EventEmitter);
-
-	t.on = t.prototype.on;
-	t.emit = t.prototype.emit;
+	t.on = t._eventEmitter.on;
+	t.emit = t._eventEmitter.emit;
 
 	t._task = task;
 	t._name = name;
 
-	return t;
+	return Object.create(t);
 }
