@@ -4,7 +4,9 @@ var crypto = require('crypto');
 
 var task = {
 	something: "something",
-	time: Math.floor(new Date().getTime()/1000)
+	time: Math.floor(new Date().getTime()/1000),
+	persistant: true,
+	ttl: 5
 }
 
 task.uid = crypto.createHash('md5').update(JSON.stringify(task)).digest("hex");

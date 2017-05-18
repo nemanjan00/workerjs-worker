@@ -27,19 +27,37 @@ var w = {
 
 	listen: function(){
 		events.on(w._config.workerName, function(data){
-			console.log(JSON.parse(data));
+			var task = JSON.parse(data);
+			if(worker = w.getNextWorker()){
+				worker.send({type: "task", task: data});
+			} else {
+				if(!task.persistant){
+					task.ttl--;
+				}
+
+				events.emit(w._config.workerName, JSON.stringify(task));
+			}
 		});
 	},
 
-	fork: function(){
+	getNextWorker: function(){
+		return w._readyWorkers[0];
+	},
+
+	fork: function(number){
 		var worker = child_process.fork(path.join(process.cwd(), w._config.worker));
+
+		if(number == undefined){
+			number = w._workers.length + 1;
+		}
+
+		worker.name = "Worker " + number;
+
 		w._workers.push(worker);
 
 		worker.on("message", function(message){
 			if(message.type == "ready"){
 				w._readyWorkers.push(worker);
-
-				worker.send({type: "task"});
 			}
 		});
 
@@ -47,11 +65,19 @@ var w = {
 			w.exited(worker);
 		});
 
+		console.log(worker.name + " started... ");
+
 		return worker;
 	},
 
 	exited: function(worker){
-		w._workers = w._workers.filter(function(currentWorker){
+		var number = 0;
+
+		w._workers = w._workers.filter(function(currentWorker, key){
+			if(currentWorker == worker){
+				number = key + 1;
+			}
+
 			return currentWorker != worker;
 		});
 
@@ -59,7 +85,9 @@ var w = {
 			return currentWorker != worker;
 		});
 
-		w.fork();
+		console.log("Worker " + number + " exited... ");
+
+		w.fork(number);
 	}
 }
 
