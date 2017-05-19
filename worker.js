@@ -5,11 +5,11 @@ var task = require("./src/taskServer");
 var events = require("./src/events")();
 
 var config = {
-	workerName: "tasks",
-	workerCount: 10,
-	worker: "./workerExample",
-	tasksLimit: 1, // -1 for unlimited
-	restartLimit: 100
+	workerName: process.env.WORKERNAME || "tasks",
+	workerCount: process.env.WORKERCOUNT || 10,
+	worker: process.env.WORKER || "./workerExample",
+	tasksLimit: process.env.TASKSLIMIT || 1, // -1 for unlimited
+	restartLimit: process.env.restartLimit || 100
 }
 
 var w = {
