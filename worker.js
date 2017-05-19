@@ -95,11 +95,15 @@ var w = {
 
 		var worker = false;
 
+		var tempWorker = w.findWorker();
+
+		if(!tempWorker){
+			return false;
+		}
+
 		if(w._config.tasksLimit == -1){
-			worker = w.findWorker();
+			worker = tempWorker;
 		} else {
-			var tempWorker = w.findWorker();
-		
 			if(tempWorker.tasks.length <= w._config.tasksLimit){
 				worker = tempWorker;
 			}

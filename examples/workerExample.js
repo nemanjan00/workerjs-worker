@@ -1,9 +1,8 @@
-var worker = require("./");
+var worker = require("../");
 
 worker.init();
 
 worker.on("task", function(task){
-	console.log(task);
 	setTimeout(function(){
 		task.publish(123);
 		task.finish();
