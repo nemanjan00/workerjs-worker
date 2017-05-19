@@ -32,6 +32,7 @@ var w = {
 	_taskCount: 0, // number of tasks currently running here
 	_config: undefined, // Placeholder for config, it is added later in start function
 	_stop: false, // This is set to true when worker is shutting down
+	_listening: false,
 
 	start: function(config){
 		// lets get config and spawn workers and start listening
@@ -41,10 +42,6 @@ var w = {
 		for(i = 0; i < config.workerCount; i++){
 			w.fork();
 		}
-
-		// TODO: wait for processes to become ready before starting to listen... 
-
-		w.listen();
 	},
 
 	listen: function(){
@@ -142,6 +139,11 @@ var w = {
 		worker.on("message", function(message){
 			if(message.type == "ready"){
 				w._readyWorkers.push(worker);
+
+				if(!w._listening){
+					w._listening = true;
+					w.listen();
+				}
 			}
 		});
 
