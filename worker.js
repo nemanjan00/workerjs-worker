@@ -48,17 +48,28 @@ var w = {
 	},
 
 	listen: function(){
+		// wait for task on queue
+
 		events.on(w._config.workerName, function(data){
+			// TODO: move JSON.parse to workerjs-redis
+
 			var data = JSON.parse(data);
+
+			// Create task server for that task
+
 			var task = w._task(data, w._config.workerName);
+
+			// Get worker for it and assign it
 
 			if((!w._stop) && (worker = w.getNextWorker())){
 				task.send(worker);
 				w._taskCount++;
 				
-				if(w._taskCount >= w._config.workerCount * w._config.tasksLimit && w._config.tasksLimit > -1){
+				if(w._taskCount >= w._readyWorkers.length * w._config.tasksLimit && w._config.tasksLimit > -1){
 					events.stop();
 				}
+
+				// TODO: move this to another function
 				
 				task.on("finished", function(data){
 					if(!w._stop){
@@ -80,6 +91,8 @@ var w = {
 	},
 
 	getNextWorker: function(){
+		// Find best process that fits config. Return false is none available
+
 		var worker = false;
 
 		if(w._config.tasksLimit == -1){
@@ -96,6 +109,8 @@ var w = {
 	},
 
 	findWorker: function(){
+		// Find process with least tasts
+
 		var worker = w._readyWorkers[0];
 
 		w._readyWorkers.forEach(function(currentWorker){
