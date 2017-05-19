@@ -20,6 +20,7 @@ var w = {
 	_readyWorkers: [],
 	_taskCount: 0,
 	_config: undefined,
+	_stop: false,
 
 	start: function(config){
 		w._config = config;
@@ -36,7 +37,7 @@ var w = {
 			var data = JSON.parse(data);
 			var task = w._task(data, w._config.workerName);
 
-			if(worker = w.getNextWorker()){
+			if((!w._stop) && (worker = w.getNextWorker())){
 				task.send(worker);
 				w._taskCount++;
 				
@@ -45,8 +46,15 @@ var w = {
 				}
 				
 				task.on("finished", function(data){
-					w._taskCount--;
-					events.start();
+					if(!w._stop){
+						w._taskCount--;
+						events.start();
+					}
+
+					if(w._taskCount == 0 && w._stop){
+						process.exit();
+					}
+
 					delete task;
 				});
 			} else {
@@ -113,6 +121,12 @@ var w = {
 	},
 
 	exited: function(worker){
+		worker.tasks.forEach(function(task){
+			task.failed("error");
+
+			w._taskCount--;
+		});
+
 		w._restartCount++;
 
 		var name = "";
@@ -132,6 +146,15 @@ var w = {
 		});
 
 		console.log(name + " exited... ");
+
+		if(w._workers.length == 0){
+			process.exit(0);
+		}
+
+		if(w._stop){
+			return;
+		}
+
 
 		if(w._config.restartLimit != -1 && w._config.restartLimit <= w._restartCount){
 			// TODO: Notify user
@@ -154,4 +177,24 @@ var w = {
 }
 
 w.start(config);
+
+process.stdin.resume();//so the program will not close instantly
+
+function exitHandler(options, err) {
+	if (options.cleanup) {};
+
+	w._stop = true;
+
+	if (err) console.log(err.stack);
+	if (options.exit) process.exit();
+}
+
+//do something when app is closing
+process.on('exit', exitHandler.bind(null,{cleanup:true}));
+
+//catches ctrl+c event
+process.on('SIGINT', exitHandler.bind(null, {exit:false}));
+
+//catches uncaught exceptions
+process.on('uncaughtException', exitHandler.bind(null, {exit:false}));
 

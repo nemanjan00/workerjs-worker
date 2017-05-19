@@ -17,7 +17,7 @@ module.exports = function(task, name){
 
 			console.log(t._worker.name+" was assigned task "+t._task.uid+"... ");
 
-			t._worker.on("message", function(message){
+			var eventReciever = function(message){
 				if(message.type = "finished" && message.uid == t._task.uid){
 					console.log(t._worker.name+" finished task "+t._task.uid+"... ");
 
@@ -26,8 +26,12 @@ module.exports = function(task, name){
 					t._worker.tasks = t._worker.tasks.filter(function(task){
 						return task != t;
 					});
+
+					t._worker.removeListener("message", eventReciever, true);
 				}
-			});
+			}
+
+			t._worker.on("message", eventReciever);
 		},
 		failed: function(type){
 			if(!t._task.persistant || type == "error"){
@@ -36,6 +40,9 @@ module.exports = function(task, name){
 
 			if(t._task.ttl > 0){
 				t._events.emit(t._name, JSON.stringify(task));
+				console.log("Task "+t._task.uid+" readded to queue... ");
+			} else {
+				console.log("Task "+t._task.uid+" reached TTL and will not be added again... ");
 			}
 		}
 	}
