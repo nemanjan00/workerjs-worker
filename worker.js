@@ -4,7 +4,7 @@ var child_process = require('child_process');
 var path = require("path");
 
 var task = require("./src/taskServer");
-var events = require("./src/events")();
+var events = require("workerjs-redis")();
 
 var config = {
 	workerName: process.env.WORKERNAME || "tasks",

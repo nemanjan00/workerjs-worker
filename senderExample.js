@@ -1,4 +1,4 @@
-var events = require("./src/events")();
+var events = require("workerjs-redis")();
 
 var crypto = require('crypto');
 

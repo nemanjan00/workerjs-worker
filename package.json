@@ -1,6 +1,6 @@
 {
   "name": "workerjs-worker",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Worker manager",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,6 @@
   "author": "nemanjan00",
   "license": "ISC",
   "dependencies": {
-    "redis": "^2.7.1"
+    "workerjs-redis": "^1.0.0"
   }
 }

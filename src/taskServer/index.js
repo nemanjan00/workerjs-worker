@@ -1,4 +1,4 @@
-var events = require("../events")();
+var events = require("workerjs-redis")();
 var EventEmitter = require('events').EventEmitter;
 
 module.exports = function(task, name){
