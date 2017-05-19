@@ -30,7 +30,7 @@ module.exports = function(task, name){
 					t._worker.removeListener("message", eventReciever, true);
 				}
 
-				if(message.type = "failed" && message.uid == t._task.uid){
+				if(message.type == "failed" && message.uid == t._task.uid){
 					t.failed("error");
 				}
 			}
