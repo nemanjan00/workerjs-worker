@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/dw/workerjs-worker.svg)](https://www.npmjs.com/package/workerjs-worker)
 [![npm](https://img.shields.io/npm/dt/workerjs-worker.svg)](https://www.npmjs.com/package/workerjs-worker)
-[![npm](https://img.shields.io/npm/v/workerjs-worker.svg)](https://www.npmjs.com/package/workerjs-worker)
+[![Dependency Status](https://www.versioneye.com/user/projects/591edf7ddb8883004c604b15/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/591edf7ddb8883004c604b15)
 
 CLI Interface and library for starting and managing workers and forwarding commands and results.
 
