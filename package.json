@@ -1,10 +1,13 @@
 {
   "name": "workerjs-worker",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Interface for starting worker and communication with client.",
   "main": "index.js",
   "directories": {
     "example": "examples"
+  },
+  "bin": {
+    "workerjs-worker": "worker.js"
   },
   "dependencies": {
     "double-ended-queue": "^2.1.0-0",
