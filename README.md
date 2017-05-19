@@ -6,6 +6,14 @@
 [![npm](https://img.shields.io/npm/v/workerjs-worker.svg)](https://www.npmjs.com/package/workerjs-worker)
 [![Dependency Status](https://www.versioneye.com/user/projects/591edf7ddb8883004c604b15/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/591edf7ddb8883004c604b15)
 
+[![GitHub issues](https://img.shields.io/github/issues/workerJS/workerjs-worker.svg)](https://github.com/workerJS/workerjs-worker/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/workerJS/workerjs-worker.svg)](https://github.com/workerJS/workerjs-worker/issues?q=is%3Aissue+is%3Aclosed)
+
+[![GitHub pull requests](https://img.shields.io/github/workerJS/workerjs-worker.svg)](https://github.com/workerJS/workerjs-worker/pulls)
+[![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/workerJS/workerjs-worker.svg)](https://github.com/workerJS/workerjs-worker/pulls?q=is%3Apr+is%3Aclosed)
+
+[![GitHub contributors](https://img.shields.io/github/contributors/workerJS/workerjs-worker.svg)](https://github.com/workerJS/workerjs-worker/graphs/contributors)
+
 CLI Interface and library for starting and managing workers and forwarding commands and results.
 
 ## Instalation
