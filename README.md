@@ -1,5 +1,7 @@
 # workerjs-worker
 
+[![npm](https://img.shields.io/npm/workerJS/workerjs-worker.svg)]()
+
 CLI Interface and library for starting and managing workers and forwarding commands and results.
 
 ## Instalation
