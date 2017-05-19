@@ -7,6 +7,9 @@ module.exports = function(task){
 		finish: function(){
 			process.send({type: "finished", uid: t._task.uid})
 		},
+		failed: function(){
+			process.send({type: "failed", uid: t._task.uid})
+		},
 		publish: function(data){
 			events.publish(t._task.uid, JSON.stringify(data));
 		}
