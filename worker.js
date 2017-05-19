@@ -61,22 +61,19 @@ var w = {
 			if((!w._stop) && (worker = w.getNextWorker())){
 				task.send(worker);
 				w._taskCount++;
-				
+
 				if(w._taskCount >= w._readyWorkers.length * w._config.tasksLimit && w._config.tasksLimit > -1){
 					events.stop();
 				}
 
-				// TODO: move this to another function
+				task.on("failed", function(data){
+					w.finished();
+
+					delete task;
+				});
 				
 				task.on("finished", function(data){
-					if(!w._stop){
-						w._taskCount--;
-						events.start();
-					}
-
-					if(w._taskCount == 0 && w._stop){
-						process.exit();
-					}
+					w.finished();
 
 					delete task;
 				});
@@ -85,6 +82,17 @@ var w = {
 				task.failed();
 			}
 		});
+	},
+
+	finished: function(){
+		if(!w._stop){
+			w._taskCount--;
+			events.start();
+		}
+
+		if(w._taskCount == 0 && w._stop){
+			process.exit();
+		}
 	},
 
 	getNextWorker: function(){
@@ -144,6 +152,8 @@ var w = {
 					w._listening = true;
 					w.listen();
 				}
+
+				events.start();
 			}
 		});
 

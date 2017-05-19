@@ -18,24 +18,33 @@ module.exports = function(task, name){
 			console.log(t._worker.name+" was assigned task "+t._task.uid+"... ");
 
 			var eventReciever = function(message){
-				if(message.type = "finished" && message.uid == t._task.uid){
+				if(message.type == "finished" && message.uid == t._task.uid){
+					t.cleanup();
+					t._worker.removeListener("message", eventReciever, true);
+
 					console.log(t._worker.name+" finished task "+t._task.uid+"... ");
 
 					t.emit("finished", t._task.i);
-
-					t._worker.tasks = t._worker.tasks.filter(function(task){
-						return task != t;
-					});
-
-					t._worker.removeListener("message", eventReciever, true);
 				}
-
+				
 				if(message.type == "failed" && message.uid == t._task.uid){
+					t.cleanup();
+					t._worker.removeListener("message", eventReciever, true);
+
+					console.log(t._worker.name+" failed task "+t._task.uid+"... ");
+
 					t.failed("error");
+
+					t.emit("failed", t._task.i);
 				}
 			}
 
 			t._worker.on("message", eventReciever);
+		},
+		cleanup: function(){
+			t._worker.tasks = t._worker.tasks.filter(function(task){
+				return task != t;
+			});
 		},
 		failed: function(type){
 			if(!t._task.persistant || type == "error"){
