@@ -1,35 +1,48 @@
 #!/usr/bin/env node
 
+// For process spawning and configuration
+
 var child_process = require('child_process');
 var path = require("path");
 
+// Task server is here for talking to task client inside process and for detecting failure. 
+
 var task = require("./src/taskServer");
+
+// This is for communicating to redis
+
 var events = require("workerjs-redis")();
 
+// Default settings
+
 var config = {
-	workerName: process.env.WORKERNAME || "tasks",
-	workerCount: process.env.WORKERCOUNT || 10,
-	worker: process.env.WORKER || "./workerExample",
-	tasksLimit: process.env.TASKSLIMIT || 1, // -1 for unlimited
-	restartLimit: process.env.restartLimit || 100
+	workerName: process.env.WORKERNAME || "tasks", // this is unique name for redis queue
+	workerCount: process.env.WORKERCOUNT || 10, // number of processes to spawn
+	worker: process.env.WORKER || "./examples/workerExample", // process to spawn
+	tasksLimit: process.env.TASKSLIMIT || 1, // number of tasks per process.  -1 for unlimited
+	restartLimit: process.env.restartLimit || 100 // this worker will shutdown when processes crash this many times
 }
 
 var w = {
-	_task: task,
-	_restartCount: 0,
-	_limitReached: false,
-	_workers: [],
-	_readyWorkers: [],
-	_taskCount: 0,
-	_config: undefined,
-	_stop: false,
+	_task: task, // factory for new task server
+	_restartCount: 0, // number of restarts of workers so far, for failure detection
+	_limitReached: false, // this becomes true if restart count reached restart limit
+	_workers: [], // list of spawned workers
+	_readyWorkers: [], // list of workers that reported back as ready TODO: add timeout for worker to get online
+	_taskCount: 0, // number of tasks currently running here
+	_config: undefined, // Placeholder for config, it is added later in start function
+	_stop: false, // This is set to true when worker is shutting down
 
 	start: function(config){
+		// lets get config and spawn workers and start listening
+
 		w._config = config;
 
 		for(i = 0; i < config.workerCount; i++){
 			w.fork();
 		}
+
+		// TODO: wait for processes to become ready before starting to listen... 
 
 		w.listen();
 	},
@@ -83,9 +96,9 @@ var w = {
 	},
 
 	findWorker: function(){
-		var worker = w._workers[0];
+		var worker = w._readyWorkers[0];
 
-		w._workers.forEach(function(currentWorker){
+		w._readyWorkers.forEach(function(currentWorker){
 			if(currentWorker.tasks.length < worker.tasks.length){
 				worker = currentWorker;
 			}
@@ -180,7 +193,9 @@ var w = {
 
 w.start(config);
 
-process.stdin.resume();//so the program will not close instantly
+// Gracefull shutdown
+
+process.stdin.resume();
 
 function exitHandler(options, err) {
 	if (options.cleanup) {};
@@ -191,12 +206,7 @@ function exitHandler(options, err) {
 	if (options.exit) process.exit();
 }
 
-//do something when app is closing
 process.on('exit', exitHandler.bind(null,{cleanup:true}));
-
-//catches ctrl+c event
 process.on('SIGINT', exitHandler.bind(null, {exit:false}));
-
-//catches uncaught exceptions
 process.on('uncaughtException', exitHandler.bind(null, {exit:false}));
 
