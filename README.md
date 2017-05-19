@@ -11,14 +11,14 @@ npm install workerjs-worker --save
 
 ## Usage
 
-### Starting
+### Step 1:  Starting
 
 ```bash
 # This starts worker on channel example and spawns ./examples/workerExample.js
 WORKER=./examples/workerExample.js WORKERNAME=example ./node_modules/.bin/workerjs-worker
 ```
 
-### Usage inside process
+### Step 2: Usage inside process
 
 ```nodejs
 var worker = require("workerjs-worker");
