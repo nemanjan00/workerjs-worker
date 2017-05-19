@@ -4,5 +4,7 @@ CLI Interface and library for starting and managing workers and forwarding comma
 
 ## TODO
 
- * Define more clear names for parts of worker
+ * Define more clear names for parts of worker [worker, process, etc.]
+
+ * Implement logging and add client to worker
 
