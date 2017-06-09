@@ -1,4 +1,4 @@
-var events = require("workerjs-redis")();
+var events = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
 var EventEmitter = require('events').EventEmitter;
 
 module.exports = function(task, name){
