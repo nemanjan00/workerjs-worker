@@ -9,10 +9,6 @@ var path = require("path");
 
 var task = require("./src/taskServer");
 
-// This is for communicating to redis
-
-var events = require("workerjs-redis")();
-
 // Default settings
 
 var config = {
@@ -22,6 +18,10 @@ var config = {
 	tasksLimit: process.env.TASKSLIMIT || 1, // number of tasks per process.  -1 for unlimited
 	restartLimit: process.env.restartLimit || 100 // this worker will shutdown when processes crash this many times
 }
+
+// This is for communicating to redis
+
+var events = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
 
 var w = {
 	_task: task, // factory for new task server
