@@ -1,6 +1,6 @@
 {
   "name": "workerjs-worker",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Interface for starting worker and communication with client.",
   "main": "index.js",
   "directories": {
