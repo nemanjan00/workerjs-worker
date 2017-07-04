@@ -15,23 +15,23 @@ module.exports = function(task, name){
 
 			t._worker.tasks.push(t);
 
-			console.log(t._worker.name+" was assigned task "+t._task.uid+"... ");
+			console.log(t._worker.name+" was assigned task "+t._task._uid+"... ");
 
 			var eventReciever = function(message){
-				if(message.type == "finished" && message.uid == t._task.uid){
+				if(message.type == "finished" && message._uid == t._task._uid){
 					t.cleanup();
 					t._worker.removeListener("message", eventReciever, true);
 
-					console.log(t._worker.name+" finished task "+t._task.uid+"... ");
+					console.log(t._worker.name+" finished task "+t._task._uid+"... ");
 
 					t.emit("finished", t._task.i);
 				}
 				
-				if(message.type == "failed" && message.uid == t._task.uid){
+				if(message.type == "failed" && message._uid == t._task._uid){
 					t.cleanup();
 					t._worker.removeListener("message", eventReciever, true);
 
-					console.log(t._worker.name+" failed task "+t._task.uid+"... ");
+					console.log(t._worker.name+" failed task "+t._task._uid+"... ");
 
 					t.failed("error");
 
@@ -53,9 +53,9 @@ module.exports = function(task, name){
 
 			if(t._task.ttl > 0){
 				t._events.emit(t._name, JSON.stringify(task));
-				console.log("Task "+t._task.uid+" readded to queue... ");
+				console.log("Task "+t._task._uid+" readded to queue... ");
 			} else {
-				console.log("Task "+t._task.uid+" reached TTL and will not be added again... ");
+				console.log("Task "+t._task._uid+" reached TTL and will not be added again... ");
 			}
 		}
 	}
