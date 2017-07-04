@@ -1,6 +1,6 @@
 var redis = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
 
-var queue = redis.messaging;
+var queue = redis.queue;
 
 var EventEmitter = require('events').EventEmitter;
 
