@@ -22,9 +22,9 @@ redis@^2.7.1:
     redis-commands "^1.2.0"
     redis-parser "^2.5.0"
 
-workerjs-redis@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/workerjs-redis/-/workerjs-redis-1.0.1.tgz#6eaac8d8e185f49593bd5791c4efdd931b367a59"
+workerjs-redis@^2.0.1:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/workerjs-redis/-/workerjs-redis-2.0.4.tgz#8c97c4c9aa61f5f44a1a20b6058b429400d24b43"
   dependencies:
     double-ended-queue "^2.1.0-0"
     redis "^2.7.1"

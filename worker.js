@@ -21,7 +21,8 @@ var config = {
 
 // This is for communicating to redis
 
-var events = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
+var redis = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
+var queue = redis.queue;
 
 var w = {
 	_task: task, // factory for new task server
@@ -47,7 +48,7 @@ var w = {
 	listen: function(){
 		// wait for task on queue
 
-		events.on(w._config.workerName, function(data){
+		queue.on(w._config.workerName, function(data){
 			// TODO: move JSON.parse to workerjs-redis
 
 			var data = JSON.parse(data);
@@ -63,7 +64,7 @@ var w = {
 				w._taskCount++;
 
 				if(w._taskCount >= w._readyWorkers.length * w._config.tasksLimit && w._config.tasksLimit > -1){
-					events.stop();
+					queue.stop();
 				}
 
 				task.on("failed", function(data){
@@ -87,7 +88,7 @@ var w = {
 	finished: function(){
 		if(!w._stop){
 			w._taskCount--;
-			events.start();
+			queue.start();
 		}
 
 		if(w._taskCount == 0 && w._stop){
@@ -153,7 +154,7 @@ var w = {
 					w.listen();
 				}
 
-				events.start();
+				queue.start();
 			}
 		});
 

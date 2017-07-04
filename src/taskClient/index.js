@@ -1,4 +1,5 @@
-var events = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
+var redis = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
+var messaging = redis.messaging;
 
 module.exports = function(task){
 	var t = {
@@ -11,7 +12,7 @@ module.exports = function(task){
 			process.send({type: "failed", _uid: t._task._uid})
 		},
 		publish: function(data){
-			events.publish(t._task._uid, JSON.stringify(data));
+			messaging.emit(t._task._uid, JSON.stringify(data));
 		}
 	}
 

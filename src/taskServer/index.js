@@ -1,4 +1,7 @@
-var events = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
+var redis = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
+
+var queue = redis.messaging;
+
 var EventEmitter = require('events').EventEmitter;
 
 module.exports = function(task, name){
@@ -6,7 +9,7 @@ module.exports = function(task, name){
 		_task: undefined,
 		_worker: undefined,
 		_name: undefined,
-		_events: events,
+		_queue: queue,
 		_eventEmitter: new EventEmitter(),
 	
 		send: function(worker){
@@ -52,7 +55,7 @@ module.exports = function(task, name){
 			}
 
 			if(t._task.ttl > 0){
-				t._events.emit(t._name, JSON.stringify(task));
+				t._queue.emit(t._name, JSON.stringify(task));
 				console.log("Task "+t._task._uid+" readded to queue... ");
 			} else {
 				console.log("Task "+t._task._uid+" reached TTL and will not be added again... ");
