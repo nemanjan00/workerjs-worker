@@ -12,6 +12,8 @@ module.exports = function(task){
 			process.send({type: "failed", _uid: t._task._uid})
 		},
 		publish: function(data){
+			// Todo: make this work
+			//process.send({type: "message", _uid: t._task._uid, message: JSON.stringify(data});
 			messaging.emit(t._task._uid, JSON.stringify(data));
 		}
 	}
