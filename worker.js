@@ -12,7 +12,7 @@ var task = require("./src/taskServer");
 // Default settings
 
 var config = {
-	workerName: process.env.WORKERNAME || "tasks", // this is unique name for redis queue
+	workerName: process.env.WORKERNAME || "task", // this is unique name for redis queue
 	workerCount: process.env.WORKERCOUNT || 10, // number of processes to spawn
 	worker: process.env.WORKER || "./examples/workerExample", // process to spawn
 	tasksLimit: process.env.TASKSLIMIT || 1, // number of tasks per process.  -1 for unlimited
