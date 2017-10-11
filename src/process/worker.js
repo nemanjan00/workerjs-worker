@@ -3,7 +3,7 @@
 
 var EventEmitter = require('events').EventEmitter;
 
-var task = require("./src/taskClient");
+var task = require("./task");
 
 var worker = {
 	_eventEmitter: new EventEmitter(),

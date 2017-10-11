@@ -7,7 +7,7 @@ var path = require("path");
 
 // Task server is here for talking to task client inside process and for detecting failure. 
 
-var task = require("./src/taskServer");
+var task = require("./task");
 
 // Default settings
 
