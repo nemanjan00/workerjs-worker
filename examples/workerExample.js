@@ -4,13 +4,13 @@ worker.init();
 
 worker.on("task", function(task){
 	setTimeout(function(){
-		if(true || Math.random() * 1000 > 500){
+		if(Math.random() * 1000 > 10){
 			task.publish(123);
 			task.finish();
 		} else {
 			task.failed();
 		}
-	}, Math.random() * 100 * 0);
+	}, Math.random() * 2000);
 });
 
 worker.ready();
