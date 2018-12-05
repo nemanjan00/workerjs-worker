@@ -2,16 +2,16 @@
 
 // For process spawning and configuration
 
-var child_process = require("child_process");
-var path = require("path");
+const child_process = require("child_process");
+const path = require("path");
 
 // Task server is here for talking to task client inside process and for detecting failure. 
 
-var task = require("./task");
+const task = require("./task");
 
 // Default settings
 
-var config = {
+const config = {
 	workerName: process.env.WORKERNAME || "task", // this is unique name for redis queue
 	workerCount: process.env.WORKERCOUNT || 10, // number of processes to spawn
 	worker: process.env.WORKER || "./examples/workerExample", // process to spawn
@@ -22,10 +22,10 @@ var config = {
 
 // This is for communicating to redis
 
-var redis = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
-var queue = redis.queue;
+const redis = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
+const queue = redis.queue;
 
-var w = {
+const w = {
 	_task: task, // factory for new task server
 	_restartCount: 0, // number of restarts of workers so far, for failure detection
 	_limitReached: false, // this becomes true if restart count reached restart limit
@@ -56,7 +56,7 @@ var w = {
 
 			// Create task server for that task
 
-			var task = w._task(data, w._config.workerName);
+			const task = w._task(data, w._config.workerName);
 
 			// Get worker for it and assign it
 
@@ -97,9 +97,9 @@ var w = {
 	getNextWorker: function(){
 		// Find best process that fits config. Return false is none available
 
-		var worker = false;
+		let worker = false;
 
-		var tempWorker = w.findWorker();
+		const tempWorker = w.findWorker();
 
 		if(!tempWorker){
 			return false;
@@ -119,7 +119,7 @@ var w = {
 	findWorker: function(){
 		// Find process with least tasts
 
-		var worker = w._readyWorkers[0];
+		worker = w._readyWorkers[0];
 
 		w._readyWorkers.forEach(function(currentWorker){
 			if(currentWorker.tasks.length < worker.tasks.length){
@@ -131,7 +131,7 @@ var w = {
 	},
 
 	fork: function(number){
-		var worker = child_process.fork(path.join(process.cwd(), w._config.worker));
+		const worker = child_process.fork(path.join(process.cwd(), w._config.worker));
 
 		if(number == undefined){
 			number = w._workers.length + 1;
@@ -177,8 +177,8 @@ var w = {
 
 		w._restartCount++;
 
-		var name = "";
-		var number = 0;
+		let name = "";
+		let number = 0;
 
 		w._workers = w._workers.filter(function(currentWorker){
 			if(currentWorker == worker){

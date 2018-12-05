@@ -32,7 +32,7 @@ WORKER=./examples/workerExample.js WORKERNAME=example ./node_modules/.bin/worker
 ### Step 2: Usage inside process
 
 ```nodejs
-var worker = require("workerjs-worker");
+const worker = require("workerjs-worker");
 
 // Initialize communication to worker
 worker.init();

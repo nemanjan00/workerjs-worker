@@ -1,11 +1,11 @@
 // This is the module process imports
 // It is there to recieve task instantiate task
 
-var EventEmitter = require("events").EventEmitter;
+const EventEmitter = require("events").EventEmitter;
 
-var task = require("./task");
+const task = require("./task");
 
-var worker = {
+const worker = {
 	_eventEmitter: new EventEmitter(),
 
 	init: function(){

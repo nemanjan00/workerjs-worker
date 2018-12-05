@@ -1,8 +1,8 @@
-var redis = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
-var messaging = redis.messaging;
+const redis = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
+const messaging = redis.messaging;
 
 module.exports = function(task){
-	var t = {
+	const t = {
 		_task: undefined,
 
 		finish: function(){

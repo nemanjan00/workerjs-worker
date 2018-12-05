@@ -1,4 +1,4 @@
-var worker = require("../src/process/worker.js");
+const worker = require("../src/process/worker.js");
 
 worker.init();
 

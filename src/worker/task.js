@@ -1,15 +1,13 @@
-var redis = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
-
-var queue = redis.queue;
-
-var EventEmitter = require("events").EventEmitter;
+const redis = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
+const queue = redis.queue;
+const EventEmitter = require("events").EventEmitter;
 
 const config = {
 	debug: process.env.DEBUG || false
 };
 
 module.exports = function(task, name){
-	var t = {
+	const t = {
 		_task: undefined,
 		_worker: undefined,
 		_name: undefined,
@@ -26,7 +24,7 @@ module.exports = function(task, name){
 				console.log(t._worker.name+" was assigned task "+t._task._uid+"... ");
 			}
 
-			var eventReciever = function(message){
+			const eventReciever = function(message){
 				if(message.type == "finished" && message._uid == t._task._uid){
 					t.cleanup();
 					t._worker.removeListener("message", eventReciever, true);
