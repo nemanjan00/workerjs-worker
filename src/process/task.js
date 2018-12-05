@@ -13,7 +13,7 @@ module.exports = function(task){
 		},
 		publish: function(data){
 			// Todo: make this work
-			//process.send({type: "message", _uid: t._task._uid, message: JSON.stringify(data});
+			process.send({type: "message", _uid: t._task._uid, message: JSON.stringify(data)});
 			messaging.emit(t._task._uid, JSON.stringify(data));
 		}
 	};
