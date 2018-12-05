@@ -6,19 +6,19 @@ module.exports = function(task){
 		_task: undefined,
 
 		finish: function(){
-			process.send({type: "finished", _uid: t._task._uid})
+			process.send({type: "finished", _uid: t._task._uid});
 		},
 		failed: function(){
-			process.send({type: "failed", _uid: t._task._uid})
+			process.send({type: "failed", _uid: t._task._uid});
 		},
 		publish: function(data){
 			// Todo: make this work
 			//process.send({type: "message", _uid: t._task._uid, message: JSON.stringify(data});
 			messaging.emit(t._task._uid, JSON.stringify(data));
 		}
-	}
+	};
 
 	t._task = task;
 
 	return t;
-}
+};

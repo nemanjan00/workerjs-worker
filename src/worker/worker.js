@@ -2,7 +2,7 @@
 
 // For process spawning and configuration
 
-var child_process = require('child_process');
+var child_process = require("child_process");
 var path = require("path");
 
 // Task server is here for talking to task client inside process and for detecting failure. 
@@ -16,8 +16,9 @@ var config = {
 	workerCount: process.env.WORKERCOUNT || 10, // number of processes to spawn
 	worker: process.env.WORKER || "./examples/workerExample", // process to spawn
 	tasksLimit: process.env.TASKSLIMIT || 1, // number of tasks per process.  -1 for unlimited
-	restartLimit: process.env.restartLimit || 100 // this worker will shutdown when processes crash this many times
-}
+	restartLimit: process.env.restartLimit || 100, // this worker will shutdown when processes crash this many times
+	debug: process.env.DEBUG || false
+};
 
 // This is for communicating to redis
 
@@ -40,7 +41,7 @@ var w = {
 
 		w._config = config;
 
-		for(i = 0; i < config.workerCount; i++){
+		for(let i = 0; i < config.workerCount; i++){
 			w.fork();
 		}
 	},
@@ -51,7 +52,7 @@ var w = {
 		queue.on(w._config.workerName, function(data){
 			// TODO: move JSON.parse to workerjs-redis
 
-			var data = JSON.parse(data);
+			data = JSON.parse(data);
 
 			// Create task server for that task
 
@@ -59,6 +60,7 @@ var w = {
 
 			// Get worker for it and assign it
 
+			let worker;
 			if((!w._stop) && (worker = w.getNextWorker())){
 				task.send(worker);
 				w._taskCount++;
@@ -67,16 +69,12 @@ var w = {
 					queue.stop();
 				}
 
-				task.on("failed", function(data){
+				task.on("failed", function(){
 					w.finished();
-
-					delete task;
 				});
 				
-				task.on("finished", function(data){
+				task.on("finished", function(){
 					w.finished();
-
-					delete task;
 				});
 			} else {
 				console.error("All workers busy... ");
@@ -158,11 +156,14 @@ var w = {
 			}
 		});
 
-		worker.on('exit', (code, signal) => {
+		worker.on("exit", () => {
+			// TODO: Handle exit reason
 			w.exited(worker);
 		});
 
-		console.log(worker.name + " started... ");
+		if(config.debug){
+			console.log(worker.name + " started... ");
+		}
 
 		return worker;
 	},
@@ -179,7 +180,7 @@ var w = {
 		var name = "";
 		var number = 0;
 
-		w._workers = w._workers.filter(function(currentWorker, key){
+		w._workers = w._workers.filter(function(currentWorker){
 			if(currentWorker == worker){
 				name = worker.name;
 				number = worker.number;
@@ -192,7 +193,9 @@ var w = {
 			return currentWorker != worker;
 		});
 
-		console.log(name + " exited... ");
+		if(config.debug){
+			console.log(name + " exited... ");
+		}
 
 		if(w._workers.length == 0){
 			process.exit(0);
@@ -207,7 +210,9 @@ var w = {
 			// TODO: Notify user
 
 			if(!w._limitReached){
-				console.log("Restart limit reached... ");
+				if(config.debug){
+					console.log("Restart limit reached... ");
+				}
 			}
 
 			w._limitReached = true;
@@ -221,7 +226,7 @@ var w = {
 
 		w.fork(number);
 	}
-}
+};
 
 w.start(config);
 
@@ -230,15 +235,13 @@ w.start(config);
 process.stdin.resume();
 
 function exitHandler(options, err) {
-	if (options.cleanup) {};
-
 	w._stop = true;
 
 	if (err) console.log(err.stack);
 	if (options.exit) process.exit();
 }
 
-process.on('exit', exitHandler.bind(null,{cleanup:true}));
-process.on('SIGINT', exitHandler.bind(null, {exit:false}));
-process.on('uncaughtException', exitHandler.bind(null, {exit:false}));
+process.on("exit", exitHandler.bind(null,{cleanup:true}));
+process.on("SIGINT", exitHandler.bind(null, {exit:false}));
+process.on("uncaughtException", exitHandler.bind(null, {exit:false}));
 

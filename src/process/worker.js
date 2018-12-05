@@ -1,7 +1,7 @@
 // This is the module process imports
 // It is there to recieve task instantiate task
 
-var EventEmitter = require('events').EventEmitter;
+var EventEmitter = require("events").EventEmitter;
 
 var task = require("./task");
 
@@ -15,7 +15,7 @@ var worker = {
 
 		worker.emit = function(name, data){
 			worker._eventEmitter.emit(name, data);
-		}
+		};
 
 		// Make sure process stays alive
 
@@ -34,7 +34,7 @@ var worker = {
 			}
 		});
 	}
-}
+};
 
 module.exports = worker;
 
