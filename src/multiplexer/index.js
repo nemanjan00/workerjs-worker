@@ -34,7 +34,7 @@ const w = {
 
 		w._config = config;
 
-		for(let i = 0; i < config.workerCount; i++){
+		for(let i = 0; i < config.get("WORKERCOUNT"); i++){
 			w.fork();
 		}
 	},
@@ -42,14 +42,14 @@ const w = {
 	listen: function(){
 		// wait for task on queue
 
-		queue.on(w._config.workerName, function(data){
+		queue.on(w._config.get("WORKERNAME"), function(data){
 			// TODO: move JSON.parse to workerjs-redis
 
 			data = JSON.parse(data);
 
 			// Create task server for that task
 
-			const task = w._task(data, w._config.workerName);
+			const task = w._task(data, w._config.get("WORKERNAME"));
 
 			// Get worker for it and assign it
 
@@ -58,7 +58,7 @@ const w = {
 				task.send(worker);
 				w._taskCount++;
 
-				if(w._taskCount >= w._readyWorkers.length * w._config.tasksLimit && w._config.tasksLimit > -1){
+				if(w._taskCount >= w._readyWorkers.length * w._config.get("TASKLIMIT") && w._config.get("TASKLIMIT") > -1){
 					queue.stop();
 				}
 
@@ -98,10 +98,10 @@ const w = {
 			return false;
 		}
 
-		if(w._config.tasksLimit == -1){
+		if(w._config.get("TASKLIMIT") == -1){
 			worker = tempWorker;
 		} else {
-			if(tempWorker.tasks.length <= w._config.tasksLimit){
+			if(tempWorker.tasks.length <= w._config.get("TASKLIMIT")){
 				worker = tempWorker;
 			}
 		}
@@ -112,7 +112,7 @@ const w = {
 	findWorker: function(){
 		// Find process with least tasts
 
-		worker = w._readyWorkers[0];
+		let worker = w._readyWorkers[0];
 
 		w._readyWorkers.forEach(function(currentWorker){
 			if(currentWorker.tasks.length < worker.tasks.length){
@@ -124,7 +124,7 @@ const w = {
 	},
 
 	fork: function(number){
-		const worker = child_process.fork(path.join(process.cwd(), w._config.worker));
+		const worker = child_process.fork(path.join(process.cwd(), w._config.get("WORKER")));
 
 		if(number == undefined){
 			number = w._workers.length + 1;
@@ -186,7 +186,7 @@ const w = {
 			return currentWorker != worker;
 		});
 
-		if(config.debug){
+		if(config.get("DEBUG")){
 			console.log(name + " exited... ");
 		}
 
@@ -199,11 +199,11 @@ const w = {
 		}
 
 
-		if(w._config.restartLimit != -1 && w._config.restartLimit <= w._restartCount){
+		if(w._config.restartLimit != -1 && w._config.get("RESETLIMIT") <= w._restartCount){
 			// TODO: Notify user
 
 			if(!w._limitReached){
-				if(config.debug){
+				if(config.get("DEBUG")){
 					console.log("Restart limit reached... ");
 				}
 			}

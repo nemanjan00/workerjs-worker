@@ -7,7 +7,7 @@
     "example": "examples"
   },
   "bin": {
-    "workerjs-worker": "./src/multiplexer/worker.js"
+    "workerjs-worker": "./src/multiplexer/index.js"
   },
   "dependencies": {
     "dotenv": "^6.2.0",
@@ -16,7 +16,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "worker": "node ./src/multiplexer/worker.js"
+    "worker": "node ./src/multiplexer/index.js"
   },
   "repository": {
     "type": "git",
