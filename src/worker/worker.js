@@ -11,14 +11,7 @@ const task = require("./task");
 
 // Default settings
 
-const config = {
-	workerName: process.env.WORKERNAME || "task", // this is unique name for redis queue
-	workerCount: process.env.WORKERCOUNT || 10, // number of processes to spawn
-	worker: process.env.WORKER || "./examples/workerExample", // process to spawn
-	tasksLimit: process.env.TASKSLIMIT || 1, // number of tasks per process.  -1 for unlimited
-	restartLimit: process.env.restartLimit || 100, // this worker will shutdown when processes crash this many times
-	debug: process.env.DEBUG || false
-};
+const config = require("../config");
 
 // This is for communicating to redis
 

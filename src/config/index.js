@@ -1,5 +1,9 @@
 // Singelton for config
 
+// Apply .env vars
+require("dotenv").config();
+
+// Define config getter/setter
 const config = {
 	_data: {
 	},
@@ -26,6 +30,10 @@ const config = {
 		return config._data;
 	}
 };
+
+// Apply defaults
+const defaultSettings = require("../../config.json");
+config.setDefaults(defaultSettings);
 
 module.exports = config; 
 

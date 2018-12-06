@@ -1,1 +1,8 @@
-{}
+{
+  "WORKERNAME": "task",
+  "WORKERCOUNT": 10,
+  "WORKER": "./examples/sleepExample.js",
+  "TASKLIMIT": 1,
+  "RESTARTLIMIT": 100,
+  "DEBUG": true
+}
