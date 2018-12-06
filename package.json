@@ -1,8 +1,8 @@
 {
   "name": "workerjs-worker",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Interface for starting worker and communication with client.",
-  "main": "./src/worker/worker.js",
+  "main": "./src/process/worker.js",
   "directories": {
     "example": "examples"
   },
