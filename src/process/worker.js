@@ -8,9 +8,9 @@ const worker = {
 	_eventEmitter: new EventEmitter(),
 
 	//init: function(){
-		//// Make sure process stays alive
+	//// Make sure process stays alive
 
-		//process.on("message", function(){});
+	//process.on("message", function(){});
 	//},
 
 	on: function(name, callback){
