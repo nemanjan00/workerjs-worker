@@ -10,7 +10,8 @@
 [![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/workerJS/workerjs-worker.svg)](https://github.com/workerJS/workerjs-worker/pulls?q=is%3Apr+is%3Aclosed)
 [![GitHub contributors](https://img.shields.io/github/contributors/workerJS/workerjs-worker.svg)](https://github.com/workerJS/workerjs-worker/graphs/contributors)
 
-CLI Interface and library for starting and managing workers and forwarding commands and results.
+CLI Interface and library for starting and managing
+workers and forwarding commands and results.
 
 ## Instalation
 
@@ -35,16 +36,15 @@ const worker = require("workerjs-worker");
 
 // Subscribe on new tasks from worker
 worker.on("task", function(task){
-	// You just got new task
+  // You just got new task
 
-	setTimeout(function(){
-		// Tell something to client
-		task.publish(123);
+  setTimeout(function(){
+    // Tell something to client
+    task.publish(123);
 
-		// Say to worker that you are finished. 
-		task.finish();
-	}, Math.random() * 3000);
-
+    // Say to worker that you are finished.
+    task.finish();
+  }, Math.random() * 3000);
 });
 
 // Tell worker that you are ready to recieve tasks
@@ -54,7 +54,7 @@ worker.ready();
 
 ## TODO
 
-* Define more clear names for parts of worker [worker, process, etc.]
-
 * Implement logging and add client to worker
+
+* Implement `node-ipc`
 
