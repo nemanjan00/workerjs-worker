@@ -1,6 +1,3 @@
-const redis = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
-const messaging = redis.messaging;
-
 module.exports = function(task){
 	const t = {
 		_task: undefined,
@@ -12,9 +9,7 @@ module.exports = function(task){
 			process.send({type: "failed", _uid: t._task._uid});
 		},
 		publish: function(data){
-			// Todo: make this work
 			process.send({type: "message", _uid: t._task._uid, message: JSON.stringify(data)});
-			messaging.emit(t._task._uid, JSON.stringify(data));
 		}
 	};
 
@@ -22,3 +17,4 @@ module.exports = function(task){
 
 	return t;
 };
+

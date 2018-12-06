@@ -51,7 +51,7 @@ worker.on("task", function(task){
 
 });
 
-// Tell worker that you are ready
+// Tell worker that you are ready to recieve tasks
 worker.ready();
 
 ```

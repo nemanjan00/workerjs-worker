@@ -10,6 +10,7 @@
     "workerjs-worker": "./src/worker/worker.js"
   },
   "dependencies": {
+    "dotenv": "^6.2.0",
     "workerjs-redis": "^2.0.1"
   },
   "devDependencies": {},

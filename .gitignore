@@ -1,10 +1,8 @@
-# Ignore Vim temp files
-
-*~
-*.swp
-*.swo
-
 # Ignore Node.JS packages
 
 /node_modules
+
+# Dotenv config
+
+/.env
 
