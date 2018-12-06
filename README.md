@@ -3,7 +3,6 @@
 [![npm](https://img.shields.io/npm/dw/workerjs-worker.svg)](https://www.npmjs.com/package/workerjs-worker)
 [![npm](https://img.shields.io/npm/dt/workerjs-worker.svg)](https://www.npmjs.com/package/workerjs-worker)
 [![npm](https://img.shields.io/npm/v/workerjs-worker.svg)](https://www.npmjs.com/package/workerjs-worker)
-[![Dependency Status](https://www.versioneye.com/user/projects/591edf7ddb8883004c604b15/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/591edf7ddb8883004c604b15)
 
 [![GitHub issues](https://img.shields.io/github/issues/workerJS/workerjs-worker.svg)](https://github.com/workerJS/workerjs-worker/issues)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/workerJS/workerjs-worker.svg)](https://github.com/workerJS/workerjs-worker/issues?q=is%3Aissue+is%3Aclosed)
@@ -34,9 +33,6 @@ WORKER=./examples/workerExample.js WORKERNAME=example ./node_modules/.bin/worker
 ```nodejs
 const worker = require("workerjs-worker");
 
-// Initialize communication to worker
-worker.init();
-
 // Subscribe on new tasks from worker
 worker.on("task", function(task){
 	// You just got new task
@@ -58,7 +54,7 @@ worker.ready();
 
 ## TODO
 
- * Define more clear names for parts of worker [worker, process, etc.]
+* Define more clear names for parts of worker [worker, process, etc.]
 
- * Implement logging and add client to worker
+* Implement logging and add client to worker
 

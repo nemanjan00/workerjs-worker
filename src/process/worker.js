@@ -2,28 +2,24 @@
 // It is there to recieve task instantiate task
 
 const EventEmitter = require("events").EventEmitter;
-
 const task = require("./task");
 
 const worker = {
 	_eventEmitter: new EventEmitter(),
 
-	init: function(){
-		worker.on = function(name, callback){
-			worker._eventEmitter.on(name, callback);
-		};
+	//init: function(){
+		//// Make sure process stays alive
 
-		worker.emit = function(name, data){
-			worker._eventEmitter.emit(name, data);
-		};
+		//process.on("message", function(){});
+	//},
 
-		// Make sure process stays alive
-
-		process.on("message", function(){});
+	on: function(name, callback){
+		worker._eventEmitter.on(name, callback);
 	},
 
-	on: undefined,
-	emit: undefined,
+	emit: (name, data) => {
+		worker._eventEmitter.emit(name, data);
+	},
 
 	ready: function(){
 		process.send({type: "ready"});	

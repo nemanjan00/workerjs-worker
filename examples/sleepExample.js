@@ -1,7 +1,5 @@
 const worker = require("../src/process/worker.js");
 
-worker.init();
-
 worker.on("task", function(task){
 	setTimeout(function(){
 		if(Math.random() * 100 > 10){
