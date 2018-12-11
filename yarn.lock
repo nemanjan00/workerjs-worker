@@ -163,10 +163,10 @@ url-parse@~1.4.3:
     querystringify "^2.0.0"
     requires-port "^1.0.0"
 
-workerjs-rabbitmq@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/workerjs-rabbitmq/-/workerjs-rabbitmq-0.0.2.tgz#6fd6b88d6580ca77a708f0707db96776b6956495"
-  integrity sha512-Q6T70H13EJLD32eS6vBz6DOEqhgPEyj72BWlgQ7d+hdizxyTvVNhxKPImkNYE6IB2qJCybqbcGepK6+e9XDGHw==
+workerjs-rabbitmq@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/workerjs-rabbitmq/-/workerjs-rabbitmq-0.0.3.tgz#d864cf9ba4a2ae038e92eeab3239b640f0ef2626"
+  integrity sha512-SXnjbq6TL5tVPahpDJy+VmdAw7Evi5lzMb79rdV56XXjxMu5OzsSlJCXXlcDbro05mz0LFi5XrmyzYFQXSMpjQ==
   dependencies:
     amqplib "^0.5.3"
     events "^3.0.0"

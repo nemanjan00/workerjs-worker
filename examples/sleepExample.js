@@ -6,7 +6,9 @@ worker.on("task", function(task){
 			task.publish(123);
 			task.finish();
 		} else {
-			task.failed();
+			task.publish(123);
+			task.finish();
+			//task.failed();
 		}
 	}, 0 + Math.random() * 0);
 });

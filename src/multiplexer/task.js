@@ -28,8 +28,6 @@ module.exports = function(task, name){
 			}
 
 			const eventReciever = function(message){
-				console.log(message);
-
 				if(message.type == "finished" && message._uid == t._task._uid){
 					t.cleanup();
 					t._worker.removeListener("message", eventReciever, true);
