@@ -1,5 +1,8 @@
-const redis = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
+const redis = require("workerjs-rabbitmq")({url: process.env.REDIS_URL || undefined});
+
 const queue = redis.queue;
+const messaging = redis.messaging;
+
 const EventEmitter = require("events").EventEmitter;
 
 const config = {
@@ -25,6 +28,8 @@ module.exports = function(task, name){
 			}
 
 			const eventReciever = function(message){
+				console.log(message);
+
 				if(message.type == "finished" && message._uid == t._task._uid){
 					t.cleanup();
 					t._worker.removeListener("message", eventReciever, true);
@@ -47,6 +52,10 @@ module.exports = function(task, name){
 					t.failed("error");
 
 					t.emit("failed", t._task.i);
+				}
+
+				if(message.type == "message"  && message._uid == t._task._uid){
+					t._messaging.emit(t._task._uid, JSON.stringify(message.message));
 				}
 			};
 
@@ -86,5 +95,15 @@ module.exports = function(task, name){
 	t._task = task;
 	t._name = name;
 
-	return t;
+	return new Promise((resolve) => {
+		Promise.all([
+			queue,
+			messaging
+		]).then((resolvedDeps) => {
+			t._queue = resolvedDeps[0];
+			t._messaging = resolvedDeps[1];
+
+			resolve(t);
+		})
+	});
 };

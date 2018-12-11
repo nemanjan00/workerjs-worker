@@ -15,8 +15,8 @@ const config = require("../config");
 
 // This is for communicating to redis
 
-const redis = require("workerjs-redis")({url: process.env.REDIS_URL || undefined});
-const queue = redis.queue;
+const redis = require("workerjs-rabbitmq")({url: process.env.REDIS_URL || undefined});
+let queue = redis.queue;
 
 const w = {
 	_task: task, // factory for new task server
@@ -31,12 +31,16 @@ const w = {
 
 	start: function(config){
 		// lets get config and spawn workers and start listening
+		
+		queue.then((queueResolved) => {
+			queue = queueResolved;
 
-		w._config = config;
+			w._config = config;
 
-		for(let i = 0; i < config.get("WORKERCOUNT"); i++){
-			w.fork();
-		}
+			for(let i = 0; i < config.get("WORKERCOUNT"); i++){
+				w.fork();
+			}
+		});
 	},
 
 	listen: function(){
@@ -45,41 +49,49 @@ const w = {
 		queue.on(w._config.get("WORKERNAME"), function(data){
 			// TODO: move JSON.parse to workerjs-redis
 
-			data = JSON.parse(data);
+			if(typeof data == "string"){
+				data = JSON.parse(data);
+			}
 
 			// Create task server for that task
 
 			const task = w._task(data, w._config.get("WORKERNAME"));
 
-			// Get worker for it and assign it
+			task.then((task) => {
+				// Get worker for it and assign it
 
-			let worker;
-			if((!w._stop) && (worker = w.getNextWorker())){
-				task.send(worker);
-				w._taskCount++;
+				let worker;
+				if((!w._stop) && (worker = w.getNextWorker())){
+					task.send(worker);
+					w._taskCount++;
 
-				if(w._taskCount >= w._readyWorkers.length * w._config.get("TASKLIMIT") && w._config.get("TASKLIMIT") > -1){
-					queue.stop();
+					if(w._taskCount >= w._readyWorkers.length * w._config.get("TASKLIMIT") && w._config.get("TASKLIMIT") > -1){
+						if(queue.stop){
+							queue.stop();
+						}
+					}
+
+					task.on("failed", function(){
+						w.finished();
+					});
+					
+					task.on("finished", function(){
+						w.finished();
+					});
+				} else {
+					console.error("All workers busy... ");
+					task.failed();
 				}
-
-				task.on("failed", function(){
-					w.finished();
-				});
-				
-				task.on("finished", function(){
-					w.finished();
-				});
-			} else {
-				console.error("All workers busy... ");
-				task.failed();
-			}
+			});
 		});
 	},
 
 	finished: function(){
 		if(!w._stop){
 			w._taskCount--;
-			queue.start();
+			if(queue.start !== undefined){
+				queue.start();
+			}
 		}
 
 		if(w._taskCount == 0 && w._stop){
@@ -145,7 +157,9 @@ const w = {
 					w.listen();
 				}
 
-				queue.start();
+				if(queue.start !== undefined){
+					queue.start();
+				}
 			}
 		});
 

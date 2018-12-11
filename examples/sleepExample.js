@@ -8,7 +8,7 @@ worker.on("task", function(task){
 		} else {
 			task.failed();
 		}
-	}, 500 + Math.random() * 200);
+	}, 0 + Math.random() * 0);
 });
 
 worker.ready();
