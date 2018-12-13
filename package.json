@@ -1,5 +1,5 @@
 {
-  "name": "workerjs-worker",
+  "name": "workerjs-mux",
   "version": "2.0.8",
   "description": "Interface for starting worker and communication with client.",
   "main": "./src/process/worker.js",
@@ -7,7 +7,7 @@
     "example": "examples"
   },
   "bin": {
-    "workerjs-worker": "./src/multiplexer/index.js"
+    "workerjs-mux": "./src/multiplexer/index.js"
   },
   "dependencies": {
     "dotenv": "^6.2.0",
@@ -22,12 +22,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nemanjan00/workerjs-worker.git"
+    "url": "git+https://github.com/workerJS/workerjs-mux.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nemanjan00/workerjs-worker/issues"
+    "url": "https://github.com/workerJS/workerjs-mux/issues"
   },
-  "homepage": "https://github.com/nemanjan00/workerjs-worker#readme"
+  "homepage": "https://github.com/workerJS/workerjs-mux#readme"
 }
